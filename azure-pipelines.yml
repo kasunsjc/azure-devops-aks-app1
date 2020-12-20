@@ -71,6 +71,7 @@ stages:
         - task: Kubernetes@1
           displayName: kubectl apply for secretType dockerRegistry
           inputs:
+            connectionType: Azure Resource Manager
             azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
             azureResourceGroup: $(azureResourceGroup)
             kubernetesCluster: $(kubernetesCluster)
