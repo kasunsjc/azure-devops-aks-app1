@@ -37,7 +37,7 @@ stages:
     - task: qetza.replacetokens.replacetokens-task.replacetokens@3
       displayName: 'Replace tokens in mhc-aks.yaml'
       inputs:
-        targetFiles: 'mhc-aks.yaml'
+        targetFiles: 'Git-Repository-files/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml'
         escapeType: none
         tokenPrefix: '__'
         tokenSuffix: '__'   
