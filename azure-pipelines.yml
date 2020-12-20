@@ -13,7 +13,7 @@ variables:
   dockerRegistryServiceConnection: 'ACR-ManaualConnection'
   imageRepository: 'app1/app1nginx'
   containerRegistry: 'cloudlifeacr.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  dockerfilePath: '*/Dockerfile'
   tag: '$(Build.BuildId)'
   
   # Agent VM image name
