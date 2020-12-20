@@ -34,13 +34,6 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      displayName: 'Replace tokens in mhc-aks.yaml'
-      inputs:
-        targetFiles: 'Git-Repository-files/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml'
-        escapeType: none
-        tokenPrefix: '_'
-        tokenSuffix: '_'   
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
@@ -68,6 +61,13 @@ stages:
       pool:
         vmImage: $(vmImageName)
       steps:
+        - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+          displayName: 'Replace tokens in mhc-aks.yaml'
+          inputs:
+            targetFiles: 'Git-Repository-files/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml'
+            escapeType: none
+            tokenPrefix: '_'
+            tokenSuffix: '_'   
         - task: Kubernetes@1
           displayName: kubectl apply for secretType dockerRegistry
           inputs:
