@@ -17,9 +17,9 @@ variables:
   tag: '$(Build.BuildId)'
 
   azureSubscriptionEndpoint: Microsoft Azure Sponsorship-Azure
-  azureContainerRegistry: contoso.azurecr.io
-  azureResourceGroup: Contoso
-  kubernetesCluster: Contoso
+  azureContainerRegistry: cloudlifeacr.azurecr.io
+  azureResourceGroup: aksdemo
+  kubernetesCluster: aksdemocluster
   useClusterAdmin: false
   
   # Agent VM image name
@@ -60,10 +60,34 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
 
-# - stage: Deploy
-#   displayName: Deploy to AKS
-#   jobs:
-#     - job: Deploy
-#       displayName: Deploy to aks
-#       pool:
-#         vmImage: $(vmImageName)
+- stage: Deploy
+  displayName: Deploy to AKS
+  jobs:
+    - job: Deploy
+      displayName: Deploy to aks
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+        - task: Kubernetes@1
+          displayName: kubectl apply for secretType dockerRegistry
+          inputs:
+            azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+            azureResourceGroup: $(azureResourceGroup)
+            kubernetesCluster: $(kubernetesCluster)
+            command: create
+            secretType: dockerRegistry
+            containerRegistryType: Azure Container Registry
+            azureSubscriptionEndpointForSecrets: $(azureSubscriptionEndpoint)
+            azureContainerRegistry: $(azureContainerRegistry)
+            secretName: arcimagepull
+            forceUpdate: true        
+        - task: Kubernetes@1
+          displayName: kubectl apply using configFile
+          inputs:
+            connectionType: Azure Resource Manager
+            azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+            azureResourceGroup: $(azureResourceGroup)
+            kubernetesCluster: $(kubernetesCluster)
+            command: apply
+            useConfigurationFile: true
+            configuration: 'Git-Repository-files/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml'
