@@ -75,12 +75,11 @@ stages:
             azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
             azureResourceGroup: $(azureResourceGroup)
             kubernetesCluster: $(kubernetesCluster)
-            command: create
             secretType: dockerRegistry
             containerRegistryType: Azure Container Registry
             azureSubscriptionEndpointForSecrets: $(azureSubscriptionEndpoint)
             azureContainerRegistry: $(azureContainerRegistry)
-            secretName: arcimagepull
+            secretName: acrimagepull
             forceUpdate: true        
         - task: Kubernetes@1
           displayName: kubectl apply using configFile
