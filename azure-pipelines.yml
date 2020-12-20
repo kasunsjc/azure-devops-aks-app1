@@ -37,8 +37,11 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-    - publish: kube-manifests
-      artifact: kube-manifests
+    - task: PublishBuildArtifacts@1
+      displayName: publish artifacts
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
 
 # - stage: Deploy
 #   displayName: Deploy to AKS
