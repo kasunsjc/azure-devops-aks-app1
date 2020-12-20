@@ -15,6 +15,12 @@ variables:
   containerRegistry: 'cloudlifeacr.azurecr.io'
   dockerfilePath: '*/Dockerfile'
   tag: '$(Build.BuildId)'
+
+  azureSubscriptionEndpoint: Microsoft Azure Sponsorship-Azure
+  azureContainerRegistry: contoso.azurecr.io
+  azureResourceGroup: Contoso
+  kubernetesCluster: Contoso
+  useClusterAdmin: false
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -28,6 +34,13 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in mhc-aks.yaml'
+      inputs:
+        targetFiles: 'mhc-aks.yaml'
+        escapeType: none
+        tokenPrefix: '__'
+        tokenSuffix: '__'   
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
@@ -50,5 +63,3 @@ stages:
 #       displayName: Deploy to aks
 #       pool:
 #         vmImage: $(vmImageName)
-#       steps:
-#         - task: Kubernetes@0
