@@ -37,8 +37,8 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-    - publish: manifests
-      artifact: manifests
+    - publish: kube-manifests
+      artifact: kube-manifests
 
 # - stage: Deploy
 #   displayName: Deploy to AKS
