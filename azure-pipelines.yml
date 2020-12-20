@@ -100,7 +100,7 @@ stages:
 
 - stage: Deploy_QA
   displayName: Deploy to AKS
-  dependsOn: Deploy to Dev
+  dependsOn: Deploy_Dev
   variables:
     env: qa
     namespace: qa
@@ -145,7 +145,7 @@ stages:
 
 - stage: Deploy_Prod
   displayName: Deploy to AKS
-  dependsOn: Deploy to QA
+  dependsOn: Deploy_QA
   variables:
     env: prod
     namespace: developproductionment
