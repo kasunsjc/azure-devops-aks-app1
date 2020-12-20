@@ -54,7 +54,7 @@ stages:
         ArtifactName: 'drop'
 
 - stage: Deploy_Dev
-  displayName: Deploy to AKS
+  displayName: Deploy to AKS Development
   dependsOn: Build
   variables:
     env: dev
@@ -99,7 +99,7 @@ stages:
             configuration: 'Git-Repository-files/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml'
 
 - stage: Deploy_QA
-  displayName: Deploy to AKS
+  displayName: Deploy to AKS QA
   dependsOn: Deploy_Dev
   variables:
     env: qa
@@ -144,11 +144,11 @@ stages:
             configuration: 'Git-Repository-files/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml'
 
 - stage: Deploy_Prod
-  displayName: Deploy to AKS
+  displayName: Deploy to AKS Production
   dependsOn: Deploy_QA
   variables:
     env: prod
-    namespace: developproductionment
+    namespace: production
   jobs:
     - job: Deploy
       displayName: Deploy to aks
