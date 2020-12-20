@@ -98,6 +98,52 @@ stages:
             useConfigurationFile: true
             configuration: 'Git-Repository-files/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml'
 
+- stage: Deploy_Staging
+  displayName: Deploy to AKS Staging
+  dependsOn: Build
+  variables:
+    env: staging
+    namespace: staging
+  jobs:
+    - job: Deploy
+      displayName: Deploy to aks
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+        - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+          displayName: 'Replace tokens in deployment'
+          inputs:
+            targetFiles: 'Git-Repository-files/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml'
+            escapeType: none
+            tokenPrefix: '_'
+            tokenSuffix: '_'   
+        - task: Kubernetes@1
+          displayName: kubectl apply for secretType dockerRegistry
+          inputs:
+            connectionType: Azure Resource Manager
+            azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+            azureResourceGroup: $(azureResourceGroup)
+            kubernetesCluster: $(kubernetesCluster)
+            secretType: dockerRegistry
+            containerRegistryType: Azure Container Registry
+            azureSubscriptionEndpointForSecrets: $(azureSubscriptionEndpoint)
+            azureContainerRegistry: $(azureContainerRegistry)
+            secretName: acrimagepull
+            namespace: $(namespace)
+            forceUpdate: true        
+        - task: Kubernetes@1
+          displayName: kubectl apply using configFile
+          inputs:
+            connectionType: Azure Resource Manager
+            azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+            azureResourceGroup: $(azureResourceGroup)
+            kubernetesCluster: $(kubernetesCluster)
+            command: apply
+            namespace: $(namespace)
+            useConfigurationFile: true
+            configuration: 'Git-Repository-files/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml'
+
+
 - stage: Deploy_QA
   displayName: Deploy to AKS QA
   dependsOn: Deploy_Dev
