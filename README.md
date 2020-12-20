@@ -1,1 +1,2 @@
+[![Build Status](https://dev.azure.com/kasunsjc1990/azure-devops-aks-app1/_apis/build/status/01-docker-build-push-acr?branchName=main)](https://dev.azure.com/kasunsjc1990/azure-devops-aks-app1/_build/latest?definitionId=20&branchName=main)
 # azure-dev-ops-aks-app1
