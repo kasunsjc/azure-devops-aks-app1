@@ -39,8 +39,8 @@ stages:
       inputs:
         targetFiles: 'Git-Repository-files/kube-manifests/01-Deployment-and-LoadBalancer-Service.yml'
         escapeType: none
-        tokenPrefix: '__'
-        tokenSuffix: '__'   
+        tokenPrefix: '_'
+        tokenSuffix: '_'   
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
